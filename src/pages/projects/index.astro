@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/project/ProjectCard.astro';
+import { getAllProjects, getEntriesForProject } from '../../utils/projects';
+
+const allProjects = await getAllProjects();
+
+const projectsWithCounts = await Promise.all(
+  allProjects.map(async (project) => ({
+    project,
+    entryCount: (await getEntriesForProject(project.slug)).length,
+  }))
+);
+
+const groups = {
+  wip: projectsWithCounts.filter((p) => p.project.data.status === 'wip'),
+  completed: projectsWithCounts.filter((p) => p.project.data.status === 'completed'),
+  idea: projectsWithCounts.filter((p) => p.project.data.status === 'idea'),
+  archived: projectsWithCounts.filter((p) => p.project.data.status === 'archived'),
+};
+
+const groupLabels: Record<string, string> = {
+  wip: 'En progreso',
+  completed: 'Completados',
+  idea: 'Ideas',
+  archived: 'Archivados',
+};
+---
+
+<BaseLayout
+  title="Proyectos"
+  description="Diarios de ingeniería de clones de productos SaaS, experimentos de IA, infraestructura y arquitectura de software."
+>
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <header class="mb-12">
+      <h1 class="mb-3 text-3xl font-bold text-gray-900 dark:text-gray-100">Proyectos</h1>
+      <p class="text-gray-500 dark:text-gray-400">
+        Cada proyecto es un diario de ingeniería — decisiones técnicas, problemas encontrados
+        y lo que aprendí en el camino.
+      </p>
+    </header>
+
+    {
+      projectsWithCounts.length === 0 && (
+        <p class="text-gray-500 dark:text-gray-400">Sin proyectos publicados todavía.</p>
+      )
+    }
+
+    {
+      Object.entries(groups).map(
+        ([status, items]) =>
+          items.length > 0 && (
+            <section class="mb-12">
+              <h2 class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                {groupLabels[status]}
+              </h2>
+              {items.map(({ project, entryCount }) => (
+                <ProjectCard project={project} entryCount={entryCount} />
+              ))}
+            </section>
+          )
+      )
+    }
+  </div>
+</BaseLayout>

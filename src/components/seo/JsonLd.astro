@@ -1,0 +1,63 @@
+---
+interface Props {
+  type: 'website' | 'article' | 'project';
+  title: string;
+  description: string;
+  url: string;
+  image?: string;
+  publishedAt?: Date;
+  updatedAt?: Date;
+  author?: string;
+  technologies?: string[];
+}
+
+const {
+  type,
+  title,
+  description,
+  url,
+  image,
+  publishedAt,
+  updatedAt,
+  author = 'Hugo Talledos',
+  technologies,
+} = Astro.props;
+
+const personSchema = { '@type': 'Person', name: author };
+
+const schema =
+  type === 'article'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: title,
+        description,
+        url,
+        image,
+        datePublished: publishedAt?.toISOString(),
+        dateModified: updatedAt?.toISOString() ?? publishedAt?.toISOString(),
+        author: personSchema,
+        publisher: personSchema,
+      }
+    : type === 'project'
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          name: title,
+          description,
+          url,
+          image,
+          applicationCategory: 'DeveloperApplication',
+          author: personSchema,
+          ...(technologies && { keywords: technologies.join(', ') }),
+        }
+      : {
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: author,
+          url,
+          description,
+        };
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

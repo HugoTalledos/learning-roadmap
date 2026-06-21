@@ -1,0 +1,31 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getSortedPosts } from '../../utils/posts';
+import { calculateReadingTime } from '../../utils/reading-time';
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  return posts.map((post, i) => ({
+    params: { slug: post.slug },
+    props: {
+      post,
+      prev: posts[i + 1] ?? null,
+      next: posts[i - 1] ?? null,
+    },
+  }));
+}
+
+const { post, prev, next } = Astro.props;
+const { Content, headings } = await post.render();
+const readingTime = calculateReadingTime(post.body);
+---
+
+<ArticleLayout
+  post={post}
+  headings={headings}
+  readingTime={readingTime}
+  prev={prev ?? undefined}
+  next={next ?? undefined}
+>
+  <Content />
+</ArticleLayout>

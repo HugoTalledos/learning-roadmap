@@ -1,0 +1,53 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ArticleHeader from '../components/blog/ArticleHeader.astro';
+import TableOfContents from '../components/blog/TableOfContents.astro';
+import ArticleNav from '../components/blog/ArticleNav.astro';
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  headings: MarkdownHeading[];
+  readingTime: number;
+  prev?: CollectionEntry<'posts'>;
+  next?: CollectionEntry<'posts'>;
+}
+
+const { post, headings, readingTime, prev, next } = Astro.props;
+const { title, description, publishedAt, updatedAt, tags, coverImage } = post.data;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={coverImage}
+  type="article"
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+  tags={tags}
+>
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <div class="lg:grid lg:grid-cols-[1fr_220px] lg:gap-16">
+      <article>
+        <ArticleHeader post={post} readingTime={readingTime} />
+
+        <div class="prose prose-gray max-w-none dark:prose-invert prose-headings:scroll-mt-20 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline dark:prose-a:text-blue-400 prose-code:rounded prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:font-mono prose-code:text-sm dark:prose-code:bg-gray-800 prose-pre:rounded-lg prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700">
+          <slot />
+        </div>
+
+        <ArticleNav prev={prev} next={next} />
+      </article>
+
+      {
+        headings.length > 0 && (
+          <aside class="hidden lg:block">
+            <div class="sticky top-24">
+              <TableOfContents headings={headings} />
+            </div>
+          </aside>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>

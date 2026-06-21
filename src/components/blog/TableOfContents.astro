@@ -1,0 +1,32 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{
+  filtered.length > 0 && (
+    <nav aria-label="Tabla de contenido">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+        Contenido
+      </p>
+      <ul class="space-y-1.5">
+        {filtered.map((heading) => (
+          <li style={`padding-left: ${(heading.depth - 2) * 14}px`}>
+            <a
+              href={`#${heading.slug}`}
+              class="block py-0.5 text-sm leading-snug text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/project/ProjectCard.astro';
+import ArticleCard from '../components/blog/ArticleCard.astro';
+import { getFeaturedProjects, getAllProjects, getEntriesForProject } from '../utils/projects';
+import { getSortedPosts } from '../utils/posts';
+
+const allProjects = await getAllProjects();
+const featuredProjects = await getFeaturedProjects();
+
+const projectsToShow = featuredProjects.length > 0 ? featuredProjects : allProjects.slice(0, 3);
+
+const projectsWithCounts = await Promise.all(
+  projectsToShow.map(async (project) => ({
+    project,
+    entryCount: (await getEntriesForProject(project.slug)).length,
+  }))
+);
+
+const latestPosts = (await getSortedPosts()).slice(0, 3);
+
+const technologies = [
+  'TypeScript',
+  'Go',
+  'Rust',
+  'Node.js',
+  'React',
+  'Astro',
+  'PostgreSQL',
+  'Docker',
+  'Kubernetes',
+  'Terraform',
+];
+---
+
+<BaseLayout
+  title="Hugo Talledos"
+  description="Staff Software Engineer. Documentando la evolución de proyectos técnicos complejos — clones de SaaS, experimentos de IA, infraestructura y arquitectura."
+>
+  <div class="mx-auto max-w-4xl px-4 py-16">
+    <!-- Hero -->
+    <section class="mb-16">
+      <h1 class="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">Hugo Talledos</h1>
+      <p class="mb-6 max-w-2xl text-xl leading-relaxed text-gray-500 dark:text-gray-400">
+        Staff Software Engineer. Construyo clones de productos, experimento con infraestructura y
+        documento lo que aprendo en el camino.
+      </p>
+      <div class="flex flex-wrap gap-2">
+        {
+          technologies.map((tech) => (
+            <span class="rounded bg-gray-100 px-2 py-1 font-mono text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+              {tech}
+            </span>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Proyectos -->
+    <section class="mb-16">
+      <div
+        class="mb-6 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-800"
+      >
+        <h2
+          class="text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+        >
+          Proyectos
+        </h2>
+        {
+          allProjects.length > projectsToShow.length && (
+            <a
+              href="/projects"
+              class="text-xs text-blue-600 transition-colors hover:underline dark:text-blue-400"
+            >
+              Ver todos →
+            </a>
+          )
+        }
+      </div>
+      {
+        projectsWithCounts.length === 0 ? (
+          <p class="text-sm text-gray-500 dark:text-gray-400">Proyectos en camino.</p>
+        ) : (
+          projectsWithCounts.map(({ project, entryCount }) => (
+            <ProjectCard project={project} entryCount={entryCount} />
+          ))
+        )
+      }
+    </section>
+
+    <!-- Últimos artículos del blog -->
+    {
+      latestPosts.length > 0 && (
+        <section>
+          <div class="mb-6 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-800">
+            <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              Blog
+            </h2>
+            <a
+              href="/blog"
+              class="text-xs text-blue-600 transition-colors hover:underline dark:text-blue-400"
+            >
+              Ver todos →
+            </a>
+          </div>
+          {latestPosts.map((post) => (
+            <ArticleCard post={post} />
+          ))}
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>

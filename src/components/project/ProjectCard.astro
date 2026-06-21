@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import StatusBadge from './StatusBadge.astro';
+import { formatDate } from '../../utils/seo';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  entryCount: number;
+}
+
+const { project, entryCount } = Astro.props;
+const { title, description, status, technologies, updatedAt, featured, difficulty } = project.data;
+---
+
+<article class="group border-b border-gray-100 py-8 last:border-0 dark:border-gray-800/60">
+  <a href={`/projects/${project.slug}`} class="block">
+    <div class="mb-3 flex items-center gap-2">
+      <StatusBadge status={status} />
+      {
+        difficulty && (
+          <span class="font-mono text-xs text-gray-400 dark:text-gray-500">{difficulty}</span>
+        )
+      }
+      {featured && <span class="font-mono text-xs text-blue-500 dark:text-blue-400">★ destacado</span>}
+    </div>
+
+    <h2 class="mb-2 text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-400">
+      {title}
+    </h2>
+
+    <p class="mb-4 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+      {description}
+    </p>
+
+    <div class="mb-4 flex flex-wrap gap-1.5">
+      {
+        technologies.map((t) => (
+          <span class="rounded bg-gray-100 px-2 py-0.5 font-mono text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+            {t}
+          </span>
+        ))
+      }
+    </div>
+
+    <p class="font-mono text-xs text-gray-400 dark:text-gray-500">
+      {entryCount}
+      {entryCount === 1 ? 'entrada' : 'entradas'} · actualizado {formatDate(updatedAt)}
+    </p>
+  </a>
+</article>

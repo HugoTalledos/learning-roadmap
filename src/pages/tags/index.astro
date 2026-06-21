@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllTags, getPostsByTag } from '../../utils/posts';
+
+const tags = await getAllTags();
+const tagCounts = Object.fromEntries(
+  await Promise.all(tags.map(async (tag) => [tag, (await getPostsByTag(tag)).length]))
+);
+---
+
+<BaseLayout title="Tags" description="Navega los artículos por tecnología o tema.">
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <header class="mb-10">
+      <h1 class="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">Tags</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400">{tags.length} categorías</p>
+    </header>
+
+    <div class="flex flex-wrap gap-3">
+      {
+        tags.map((tag) => (
+          <a
+            href={`/tags/${tag}`}
+            class="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 font-mono text-sm text-gray-700 transition-colors hover:border-blue-400 hover:text-blue-600 dark:border-gray-700 dark:text-gray-300 dark:hover:border-blue-500 dark:hover:text-blue-400"
+          >
+            #{tag}
+            <span class="text-xs text-gray-400 dark:text-gray-500">{tagCounts[tag]}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate } from '../../utils/seo';
+import { getEntrySlug } from '../../utils/projects';
+
+interface Props {
+  entries: CollectionEntry<'entries'>[];
+  projectSlug: string;
+  currentEntrySlug?: string;
+}
+
+const { entries, projectSlug, currentEntrySlug } = Astro.props;
+---
+
+<ol class="relative space-y-0">
+  {
+    entries.map((entry, index) => {
+      const slug = getEntrySlug(entry);
+      const isLast = index === entries.length - 1;
+      const isCurrent = slug === currentEntrySlug;
+
+      return (
+        <li class="relative flex gap-5">
+          <!-- Timeline spine -->
+          <div class="flex flex-col items-center">
+            <div
+              class:list={[
+                'relative z-10 mt-1 h-2.5 w-2.5 shrink-0 rounded-full border-2',
+                isCurrent
+                  ? 'border-blue-500 bg-blue-500'
+                  : 'border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-950',
+              ]}
+            />
+            {!isLast && (
+              <div class="mt-1 w-px flex-1 bg-gray-200 dark:bg-gray-800" />
+            )}
+          </div>
+
+          <!-- Entry info -->
+          <div class:list={['pb-6', isLast && 'pb-0']}>
+            <a
+              href={`/projects/${projectSlug}/${slug}`}
+              class:list={[
+                'group block',
+                isCurrent && 'pointer-events-none',
+              ]}
+            >
+              <p class="mb-0.5 font-mono text-xs text-gray-400 dark:text-gray-500">
+                {formatDate(entry.data.date)}
+                {entry.data.category && <span class="ml-2">{entry.data.category}</span>}
+              </p>
+              <p
+                class:list={[
+                  'text-sm font-medium transition-colors',
+                  isCurrent
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-gray-800 group-hover:text-blue-600 dark:text-gray-200 dark:group-hover:text-blue-400',
+                ]}
+              >
+                {entry.data.title}
+              </p>
+            </a>
+          </div>
+        </li>
+      );
+    })
+  }
+</ol>

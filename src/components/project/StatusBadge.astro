@@ -1,0 +1,27 @@
+---
+type Status = 'idea' | 'wip' | 'completed' | 'archived';
+
+interface Props {
+  status: Status;
+}
+
+const { status } = Astro.props;
+
+const labels: Record<Status, string> = {
+  idea: 'idea',
+  wip: 'en progreso',
+  completed: 'completado',
+  archived: 'archivado',
+};
+
+const colors: Record<Status, string> = {
+  completed: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  wip: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+  idea: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+  archived: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
+};
+---
+
+<span class={`rounded-full px-2.5 py-0.5 text-xs font-medium ${colors[status]}`}>
+  {labels[status]}
+</span>

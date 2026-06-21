@@ -1,0 +1,52 @@
+---
+import EntryLayout from '../../../layouts/EntryLayout.astro';
+import { getCollection } from 'astro:content';
+import { getAllProjects, getEntriesForProject, getEntrySlug } from '../../../utils/projects';
+import { calculateReadingTime } from '../../../utils/reading-time';
+
+export async function getStaticPaths() {
+  const allEntries = await getCollection('entries', ({ data }) => !data.draft);
+  const allProjects = await getAllProjects();
+
+  const paths = await Promise.all(
+    allEntries.map(async (entry) => {
+      const projectSlug = entry.slug.split('/')[0];
+      const entrySlug = entry.slug.split('/').slice(1).join('/');
+
+      const project = allProjects.find((p) => p.slug === projectSlug);
+      const projectEntries = await getEntriesForProject(projectSlug);
+      const idx = projectEntries.findIndex((e) => e.slug === entry.slug);
+
+      return {
+        params: { slug: projectSlug, entry: entrySlug },
+        props: {
+          entry,
+          project,
+          allEntries: projectEntries,
+          prev: projectEntries[idx - 1] ?? null,
+          next: projectEntries[idx + 1] ?? null,
+        },
+      };
+    })
+  );
+
+  return paths;
+}
+
+const { entry, project, allEntries, prev, next } = Astro.props;
+const { Content, headings } = await entry.render();
+const readingTime = calculateReadingTime(entry.body);
+---
+
+<EntryLayout
+  entry={entry}
+  headings={headings}
+  readingTime={readingTime}
+  projectTitle={project?.data.title ?? entry.data.project}
+  projectSlug={entry.slug.split('/')[0]}
+  allEntries={allEntries}
+  prev={prev ?? undefined}
+  next={next ?? undefined}
+>
+  <Content />
+</EntryLayout>

@@ -1,0 +1,68 @@
+---
+import SEO from '../components/seo/SEO.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import Header from '../components/ui/Header.astro';
+import Footer from '../components/ui/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article' | 'project';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  tags?: string[];
+  technologies?: string[];
+}
+
+const {
+  title,
+  description,
+  image,
+  type = 'website',
+  publishedAt,
+  updatedAt,
+  tags,
+  technologies,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      publishedAt={publishedAt}
+      updatedAt={updatedAt}
+      tags={tags}
+    />
+    <JsonLd
+      type={type}
+      title={title}
+      description={description}
+      url={Astro.url.href}
+      image={image}
+      publishedAt={publishedAt}
+      updatedAt={updatedAt}
+      technologies={technologies}
+    />
+    <!-- Previene flash de tema incorrecto -->
+    <script is:inline>
+      const t = localStorage.getItem('theme');
+      if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+  </head>
+  <body class="flex min-h-screen flex-col bg-white text-gray-900 transition-colors duration-150 dark:bg-gray-950 dark:text-gray-100">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
