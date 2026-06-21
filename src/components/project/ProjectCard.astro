@@ -12,8 +12,8 @@ const { project, entryCount } = Astro.props;
 const { title, description, status, technologies, updatedAt, featured, difficulty } = project.data;
 ---
 
-<article class="group border-b border-gray-100 py-8 last:border-0 dark:border-gray-800/60">
-  <a href={`/projects/${project.slug}`} class="block">
+<article class="group flex flex-col rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900/50 dark:hover:shadow-gray-900/40">
+  <a href={`/projects/${project.slug}`} class="flex flex-1 flex-col p-5">
     <div class="mb-3 flex items-center gap-2">
       <StatusBadge status={status} />
       {
@@ -24,11 +24,11 @@ const { title, description, status, technologies, updatedAt, featured, difficult
       {featured && <span class="font-mono text-xs text-blue-500 dark:text-blue-400">★ destacado</span>}
     </div>
 
-    <h2 class="mb-2 text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-400">
+    <h2 class="mb-2 text-lg font-bold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-400">
       {title}
     </h2>
 
-    <p class="mb-4 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+    <p class="mb-4 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
       {description}
     </p>
 

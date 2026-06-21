@@ -51,12 +51,14 @@ const groupLabels: Record<string, string> = {
         ([status, items]) =>
           items.length > 0 && (
             <section class="mb-12">
-              <h2 class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+              <h2 class="mb-4 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
                 {groupLabels[status]}
               </h2>
-              {items.map(({ project, entryCount }) => (
-                <ProjectCard project={project} entryCount={entryCount} />
-              ))}
+              <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {items.map(({ project, entryCount }) => (
+                  <ProjectCard project={project} entryCount={entryCount} />
+                ))}
+              </div>
             </section>
           )
       )
