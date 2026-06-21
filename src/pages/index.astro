@@ -81,9 +81,11 @@ const technologies = [
         projectsWithCounts.length === 0 ? (
           <p class="text-sm text-gray-500 dark:text-gray-400">Proyectos en camino.</p>
         ) : (
-          projectsWithCounts.map(({ project, entryCount }) => (
-            <ProjectCard project={project} entryCount={entryCount} />
-          ))
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {projectsWithCounts.map(({ project, entryCount }) => (
+              <ProjectCard project={project} entryCount={entryCount} />
+            ))}
+          </div>
         )
       }
     </section>
