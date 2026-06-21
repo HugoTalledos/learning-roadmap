@@ -2,16 +2,18 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/project/ProjectCard.astro';
 import ArticleCard from '../components/blog/ArticleCard.astro';
-import { getFeaturedProjects, getAllProjects, getEntriesForProject } from '../utils/projects';
+import { getAllProjects, getEntriesForProject } from '../utils/projects';
 import { getSortedPosts } from '../utils/posts';
 
 const allProjects = await getAllProjects();
-const featuredProjects = await getFeaturedProjects();
 
-const projectsToShow = featuredProjects.length > 0 ? featuredProjects : allProjects.slice(0, 3);
+const projectsSorted = [
+  ...allProjects.filter((p) => p.data.featured),
+  ...allProjects.filter((p) => !p.data.featured),
+];
 
 const projectsWithCounts = await Promise.all(
-  projectsToShow.map(async (project) => ({
+  projectsSorted.map(async (project) => ({
     project,
     entryCount: (await getEntriesForProject(project.slug)).length,
   }))
@@ -56,19 +58,9 @@ const technologies = [
         >
           Proyectos
         </h2>
-        {
-          allProjects.length > projectsToShow.length && (
-            <a
-              href="/projects"
-              class="text-xs text-blue-600 transition-colors hover:underline dark:text-blue-400"
-            >
-              Ver todos →
-            </a>
-          )
-        }
       </div>
       {
-        projectsWithCounts.length === 0 ? (
+        projectsSorted.length === 0 ? (
           <p class="text-sm text-gray-500 dark:text-gray-400">Proyectos en camino.</p>
         ) : (
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
