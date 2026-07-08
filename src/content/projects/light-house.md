@@ -4,7 +4,7 @@ description: "Agente de IA para realizar un estudio de mercado basico de ideas d
 status: "wip"
 repository: "https://github.com/HugoTalledos/lighthouse-front"
 startedAt: 2026-07-05
-updatedAt: 2026-07-05
+updatedAt: 2026-07-08
 technologies: ["Vue", "Python", "langgraph"]
 featured: false
 difficulty: "intermediate"
