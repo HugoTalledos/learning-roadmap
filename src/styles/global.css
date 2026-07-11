@@ -23,6 +23,16 @@
   }
 }
 
+/* Tailwind Typography's `prose-code:*` utilities target every <code>,
+   including the one Shiki wraps around highlighted blocks. That leaks a
+   solid background onto `pre code`, which (being an ordinary selector)
+   beats the plugin's own `:where(pre code)` reset regardless of source
+   order and wrecks contrast against Shiki's light token colors. */
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
 /* Pagefind UI overrides */
 .pagefind-ui {
   --pagefind-ui-scale: 1;
