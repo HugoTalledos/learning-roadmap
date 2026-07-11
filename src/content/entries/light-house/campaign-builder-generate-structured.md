@@ -7,6 +7,8 @@ tags: ["ddd", "python", "langgraph", "openai", "pydantic", "json-schema", "faceb
 draft: false
 ---
 
+![Portada: campaign_builder_tool](../../../assets/light-house/campaign_tool.png)
+
 ## El problema
 
 En el [post anterior](./design-architecture.md) clasifiqué a `campaign_builder` como la más humilde de las cuatro tools: nada de loop agéntico, solo un structured output que deriva público, presupuesto y copy desde un brief. Por eso es la primera pieza que construyo — es la superficie más chica para probar el patrón de puertos antes de meterlo en tools con más partes móviles como `image_composer` o `landing_builder`.
