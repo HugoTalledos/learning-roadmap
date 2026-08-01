@@ -4,7 +4,7 @@ description: "Página de estaticos tipo blog donde se documentan los pasos segui
 status: "wip"
 repository: "https://github.com/HugoTalledos/learning-roadmap"
 startedAt: 2026-06-20
-updatedAt: 2026-08-01
+updatedAt: 2026-06-20
 technologies: ["Astro", "Firebase", "Markdown"]
 featured: false
 difficulty: "beginner"
