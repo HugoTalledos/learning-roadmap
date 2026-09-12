@@ -124,6 +124,6 @@ Si quieres echar un vistazo al código que construí, te dejo por acá los links
 Sin más por el momento, te dejo el resultado final:
 
 <video controls preload="metadata" style="width: 100%; border-radius: 0.5rem;">
-  <source src="/videos/light-house/demolight-house.mp4" type="video/mp4" />
-  Tu navegador no soporta la reproducción de video. Puedes <a href="/videos/light-house/demolight-house.mp4">descargarlo aquí</a>.
+  <source src="/videos/light-house/light_house_demo.mp4" type="video/mp4" />
+  Tu navegador no soporta la reproducción de video. Puedes <a href="/videos/light-house/light_house_demo.mp4">descargarlo aquí</a>.
 </video>
