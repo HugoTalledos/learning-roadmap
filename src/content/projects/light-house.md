@@ -81,7 +81,7 @@ Suscripción mensual/anual de café de origen colombiano con 3 planes escalona
 
 ## Configuración del agente
 En alguno de los posts te conté que quería hacer pruebas sin necesidad de gastar dinero; bueno, eso fue a medias. Para la mayor parte del flujo usé Ollama como backend para servir un LLM de manera local; sin embargo, decidí que quería probar la generación de imágenes con un modelo más potente, así que usé OpenRouter.
-Esto permitió varias cosas, como que las imágenes generadas tuvieran una calidad excelente, pero la más importante fue la reducción de tiempo en la ejecución del agente: sin generar imágenes, el agente demoró 17 minutos, y no quiero imaginarme cuánto tiempo hubiera tomado si además hubiera tenido que generar 3 imágenes. Aunque, siendo honestos, 17 minutos no es nada comparado con los posibles dos días de trabajo que a mí me hubiera tomado hacer todo esto. Quizá el uso de IA me está haciendo impaciente.
+Esto permitió varias cosas, como que las imágenes generadas tuvieran una calidad excelente, pero la más importante fue la reducción de tiempo en la ejecución del agente: sin generar imágenes, el agente demoró 14 minutos, y no quiero imaginarme cuánto tiempo hubiera tomado si además hubiera tenido que generar 3 imágenes. Aunque, siendo honestos, 14 minutos no es nada comparado con los posibles dos días de trabajo que a mí me hubiera tomado hacer todo esto. Quizá el uso de IA me está haciendo impaciente.
 
 En el repositorio puedes encontrar la configuración exacta que usé, pero aquí te comparto rápidamente los modelos usados:
 
@@ -100,6 +100,17 @@ También te dejo las especificaciones de la máquina en la que ejecuté la prueb
 | Chip             | Apple M5              |
 | Memoria          | 16 GB                 |
 
+
+## Resultados
+No tengo tiempos exactos de ejecución (hubiera sido buena idea medirlos) pero tengo algunas aproximaciones de los tiempos que demoro el agente en realizar las tareas y te comparto mis resultados
+
+| Tarea | Tiempo de respuesta |
+|-------|---------------------|
+| Primera interacción | 1:30 min |
+| Parametros para campaña | 2:30 min |
+| Anuncios | 1:20 min |
+| Landing page (primer intento) | 3:40 min |
+| Landing page (segundo intento) | 4:40 min |
 
 ## Finalmente
 Como último apartado, antes de culminar este proyecto, quiero decir que fue una experiencia muy divertida. Empezar a jugar con conceptos o formas de trabajo nuevas siempre lo es, aunque me di cuenta de que los conceptos son especialmente importantes. Saber distinguir en qué momento es necesario un proceso determinista y en qué momento es buena idea dejar que un modelo intervenga es algo nuevo que tendré que aprender a incorporar en mis futuros desarrollos.
